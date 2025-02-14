@@ -1,0 +1,50 @@
+/*index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Souvenir';
+  src: '/assets/Souvenir.otf';
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Apply your custom font globally */
+body {
+  font-family: 'Souvenir', sans-serif;
+} */
+
+@keyframes drop {
+  0% {
+    top: -10%;
+    opacity: 0;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    top: 110%;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+
+.heart {
+  animation: drop 5s linear infinite;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
