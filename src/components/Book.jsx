@@ -17,14 +17,15 @@ const Book = () => {
   return (
     <div className="book-container">
       <div className={`book ${open ? 'open' : ''}`} onClick={handleClick}>
-        {/* Pages container zooms in when open */}
+        
+        {/* PAGES now appear *before* the cover in the DOM */}
         <div className={`pages ${open ? 'pages-zoom' : ''}`}>
           <div className="page page3"></div>
           <div className="page page2"></div>
           <div className="page page1"></div>
         </div>
-        
-        {/* The cover rotates open from the left edge */}
+
+        {/* The cover should appear on top, so place it AFTER .pages */}
         <div className={`cover front-cover ${open ? 'cover-open' : ''}`}>
           <div className="cover-content">
             <div className="title-container">
@@ -38,11 +39,10 @@ const Book = () => {
             </div>
           </div>
         </div>
-        
+
         <div className="spine"></div>
         <div className="ribbon"></div>
       </div>
-      
       <div className="shadow"></div>
     </div>
   );

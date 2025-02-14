@@ -1,11 +1,9 @@
-/* Book.css */
-
 /* Container for the entire scene */
 .book-wrapper {
     position: relative;
     width: 100vw;
     height: 100vh;
-    background: #000;  /* Ensure background is black behind the overlay */
+    background: #000; /* Ensure background is black behind the overlay */
     overflow: hidden;
   }
   
@@ -24,7 +22,7 @@
   /* BOOK BASE & BORDERS                       */
   /* ========================================= */
   .book {
-    position: relative;
+    position: relative; /* Needed so child z-index can work properly */
     width: 300px;
     height: 450px;
     border: 3px solid #444;
@@ -46,10 +44,54 @@
   }
   
   /* ========================================= */
+  /* PAGES                                     */
+  /* ========================================= */
+  .pages {
+    position: absolute;
+    top: 1%;
+    left: 2.5%;
+    width: 95%;
+    height: 98%;
+    transform-style: preserve-3d;
+    transform: translateZ(-1px);
+    z-index: 1; /* Lower z-index so they stay behind the cover */
+  }
+  
+  .page {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    transform-origin: left;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: inset 0 0 8px rgba(0,0,0,0.1);
+    border-radius: 0 5px 5px 0;
+  }
+  
+  .page1 { transform: rotateY(5deg); }
+  .page2 { transform: rotateY(10deg); }
+  .page3 { transform: rotateY(15deg); }
+  
+  .book.open .page1 {
+    transform: rotateY(-10deg);
+    transition-delay: 0.2s;
+  }
+  .book.open .page2 {
+    transform: rotateY(-8deg);
+    transition-delay: 0.3s;
+  }
+  .book.open .page3 {
+    transform: rotateY(-5deg);
+    transition-delay: 0.4s;
+  }
+  
+  /* ========================================= */
   /* COVER                                     */
   /* ========================================= */
   .cover {
     position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 50%, #ff8fab 100%);
@@ -63,6 +105,7 @@
     transform: translateZ(2px);
     transform-origin: left;
     transition: transform 1.2s ease;
+    z-index: 2; /* Higher z-index so the cover is on top of the pages */
   }
   
   .cover::before {
@@ -82,7 +125,7 @@
   }
   
   /* ========================================= */
-  /* COVER CONTENT (TITLE, HEARTS, ETC.)       */
+  /* COVER CONTENT                             */
   /* ========================================= */
   .cover-content {
     position: relative;
@@ -116,7 +159,7 @@
   }
   
   /* ========================================= */
-  /* HEARTS                                  */
+  /* HEARTS                                    */
   /* ========================================= */
   .hearts-container {
     position: absolute;
@@ -145,47 +188,6 @@
   }
   
   /* ========================================= */
-  /* PAGES                                     */
-  /* ========================================= */
-  .pages {
-    position: absolute;
-    width: 95%;
-    height: 98%;
-    top: 1%;
-    left: 2.5%;
-    transform-style: preserve-3d;
-    transform: translateZ(-1px);
-  }
-  
-  .page {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: #fff;
-    transform-origin: left;
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: inset 0 0 8px rgba(0,0,0,0.1);
-    border-radius: 0 5px 5px 0;
-  }
-  
-  .page1 { transform: rotateY(5deg); }
-  .page2 { transform: rotateY(10deg); }
-  .page3 { transform: rotateY(15deg); }
-  
-  .book.open .page1 {
-    transform: rotateY(-10deg);
-    transition-delay: 0.2s;
-  }
-  .book.open .page2 {
-    transform: rotateY(-8deg);
-    transition-delay: 0.3s;
-  }
-  .book.open .page3 {
-    transform: rotateY(-5deg);
-    transition-delay: 0.4s;
-  }
-  
-  /* ========================================= */
   /* SPINE & RIBBON                            */
   /* ========================================= */
   .spine {
@@ -197,6 +199,7 @@
     background: linear-gradient(to right, #ff758c, #ff7eb3);
     transform: rotateY(90deg);
     border-radius: 2px 0 0 2px;
+    z-index: 3; /* optional if you want the spine even above the cover or behind */
   }
   
   .ribbon {
@@ -209,6 +212,7 @@
     clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%);
     transform: rotate(10deg);
     box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
+    z-index: 4; /* ensure ribbon is visible */
   }
   
   /* ========================================= */
@@ -232,7 +236,6 @@
   /* ========================================= */
   /* KEYFRAMES FOR ZOOM                        */
   /* ========================================= */
-  /* This animation scales the book up so it appears to zoom in */
   @keyframes bookZoom {
     0% {
       transform: rotateX(10deg) rotateZ(-5deg) scale(1);
