@@ -3,9 +3,11 @@ import { MusicContext } from '../contexts/MusicContext';
 import Book from './Book';
 
 const StartingPage = () => {
-  const { startMusic } = useContext(MusicContext);
-  const [started, setStarted] = useState(false);
-  const [zoom, setZoom] = useState(false);
+  const { /* startMusic, */ } = useContext(MusicContext); 
+  // We'll actually call startMusic from Book, so we don't call it directly here.
+
+  const [started, setStarted] = useState(false); // Once the book is opened
+
   const [hearts, setHearts] = useState([]);
 
   // Function to create a new heart
@@ -31,20 +33,14 @@ const StartingPage = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const handleStart = () => {
-    if (!started) {
-      setStarted(true);
-      startMusic();
-      setTimeout(() => setZoom(true), 1200);
-    }
+  // Called by the Book once it’s actually opened
+  const handleBookOpened = () => {
+    setStarted(true);
   };
 
   return (
-    <div 
-      onClick={handleStart} 
-      className="min-h-screen relative overflow-hidden bg-gradient-to-br from-pink-100 to-rose-200"
-    >
-      {/* Animated background with hearts */}
+    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-pink-100 to-rose-200">
+      {/* Animated floating hearts */}
       <div className="fixed inset-0 pointer-events-none">
         {hearts.map(heart => (
           <div
@@ -62,21 +58,20 @@ const StartingPage = () => {
         ))}
       </div>
 
-      {/* Gradient overlay */}
+      {/* Soft overlay that pulses */}
       <div className="absolute inset-0 bg-gradient-to-br from-pink-400/20 to-rose-400/20 animate-pulse" />
 
-      {/* Book container */}
-      <div className={`relative z-10 flex items-center justify-center min-h-screen transition-transform duration-1000 ${
-        zoom ? 'scale-150 opacity-0' : 'scale-100'
-      }`}>
-        <Book />
+      {/* Book container, centered */}
+      <div className="relative z-10 flex items-center justify-center min-h-screen">
+        {/* Pass a callback to Book so we know when it's opened */}
+        <Book onOpen={handleBookOpened} />
       </div>
 
-      {/* Instruction text */}
+      {/* Instruction text (only show if not started) */}
       {!started && (
         <div className="absolute bottom-20 left-0 right-0 text-center animate-bounce">
           <p className="text-rose-700 text-xl font-semibold drop-shadow-lg">
-            Click anywhere to open your gift...
+            Click the book to open your gift...
           </p>
         </div>
       )}
